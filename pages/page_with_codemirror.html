@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Education Time | 3 Columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="../layout/styles/layout.css" type="text/css" />
+<!-- 3 Column Stylesheet Added To The Page And Not To The Layout.css -->
+<link rel="stylesheet" href="../layout/styles/3_column.css" type="text/css" />
+<!--########################################################################################-->
+
+
+<link rel="stylesheet" href="lib/codemirror.css">
+<script src="lib/codemirror.js"></script>
+<script src="addon/edit/matchbrackets.js"></script>
+<link rel="stylesheet" href="addon/hint/show-hint.css">
+<script src="addon/hint/show-hint.js"></script>
+<script src="mode\clike\clike.js"></script>
+<style>.CodeMirror {border: 2px inset #dee;}</style>
+
+
+<!--########################################################################################-->
+</head>
+<body id="top">
+<div class="wrapper row1">
+  <div id="header" class="clear">
+    <div class="fl_left">
+      <h1><a href="../index.html">CodeMaster</a></h1>
+      <p>A RAIT Educational Initiative</p>
+    </div>
+    <form action="#" method="post" id="login">
+      <fieldset>
+        <legend>Student Login</legend>
+        <input type="password" />
+        <input type="text" />
+        <div id="forgot">Need <a href="#">Help ?</a> or <a href="#">Forgot Your Details ?</a></div>
+        <input type="image" src="../layout/images/sign_in.gif" id="signin" alt="Sign In" />
+      </fieldset>
+    </form>
+  </div>
+</div>
+<!-- ####################################################################################################### -->
+<div class="wrapper row2">
+  <div id="topnav">
+    <ul>
+      <li class="active"><a href="index.html">Home</a></li>
+      <li><a href="pages/style-demo.html">Tutorials</a></li>
+      <li><a href="#">Practice</a>
+        <ul>
+          <li><a href="#">Easy Problem</a></li>
+          <li><a href="#">Medium Problem</a></li>
+          <li><a href="#">Hard Problem</a></li>
+        </ul>
+      </li>
+      <li><a href="pages/3-columns.html">Registration</a></li>
+      <li class="last"><a href="pages/gallery.html">Gallery</a></li>
+    </ul>
+    <div  class="clear"></div>
+  </div>
+</div>
+<!-- ####################################################################################################### -->
+<div class="wrapper row4">
+  <div id="container" class="clear"> 
+    <!-- ####################################################################################################### -->
+    
+    
+    <!-- ############ -->
+    <article>
+<h2>C-like mode</h2>
+<div><textarea id="c-code">
+/* C demo code */
+
+#include <zmq.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <time.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <malloc.h>
+
+typedef struct {
+  void* arg_socket;
+  zmq_msg_t* arg_msg;
+  char* arg_string;
+  unsigned long arg_len;
+  int arg_int, arg_command;
+
+  int signal_fd;
+  int pad;
+  void* context;
+  sem_t sem;
+} acl_zmq_context;
+
+#define p(X) (context->arg_##X)
+
+void* zmq_thread(void* context_pointer) {
+  acl_zmq_context* context = (acl_zmq_context*)context_pointer;
+  char ok = 'K', err = 'X';
+  int res;
+
+  while (1) {
+    while ((res = sem_wait(&amp;context->sem)) == EINTR);
+    if (res) {write(context->signal_fd, &amp;err, 1); goto cleanup;}
+    switch(p(command)) {
+    case 0: goto cleanup;
+    case 1: p(socket) = zmq_socket(context->context, p(int)); break;
+    case 2: p(int) = zmq_close(p(socket)); break;
+    case 3: p(int) = zmq_bind(p(socket), p(string)); break;
+    case 4: p(int) = zmq_connect(p(socket), p(string)); break;
+    case 5: p(int) = zmq_getsockopt(p(socket), p(int), (void*)p(string), &amp;p(len)); break;
+    case 6: p(int) = zmq_setsockopt(p(socket), p(int), (void*)p(string), p(len)); break;
+    case 7: p(int) = zmq_send(p(socket), p(msg), p(int)); break;
+    case 8: p(int) = zmq_recv(p(socket), p(msg), p(int)); break;
+    case 9: p(int) = zmq_poll(p(socket), p(int), p(len)); break;
+    }
+    p(command) = errno;
+    write(context->signal_fd, &amp;ok, 1);
+  }
+ cleanup:
+  close(context->signal_fd);
+  free(context_pointer);
+  return 0;
+}
+
+void* zmq_thread_init(void* zmq_context, int signal_fd) {
+  acl_zmq_context* context = malloc(sizeof(acl_zmq_context));
+  pthread_t thread;
+
+  context->context = zmq_context;
+  context->signal_fd = signal_fd;
+  sem_init(&amp;context->sem, 1, 0);
+  pthread_create(&amp;thread, 0, &amp;zmq_thread, context);
+  pthread_detach(thread);
+  return context;
+}
+</textarea></div>
+	<script>
+      var cEditor = CodeMirror.fromTextArea(document.getElementById("c-code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/x-csrc"
+      });
+      
+      
+      var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
+      CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
+    </script>
+</article>
+    <!-- ############ -->
+    
+    <!-- ####################################################################################################### --> 
+  </div>
+</div>
+<!-- ####################################################################################################### -->
+<div class="wrapper row5">
+  <div id="footer" class="clear"> 
+    <!-- ####################################################################################################### -->
+    <div class="foot_contact">
+      <h2>Ramrao Adik Institute Of Training</h2>
+      <address>
+	  Sector 7, Phase I,<br/>
+		Pad. Dr. D. Y. Patil Vidyapeeth,<br/>
+		Nerul, Navi Mumbai - 400706.<br/>
+		Maharashtra,India
+         </address>
+      <ul>
+ 
+        <li><strong>Tel:</strong>+91 22 27709574</li>
+        <li><strong>Fax:</strong> +91 22 27709573</li>
+        <li class="last"><strong>Email:</strong> rait@rait.ac.in, webadmin@rait.ac.in</li>
+      </ul>
+    </div>
+	<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3771.6985635007813!2d73.02!3d19.032999999999998!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c3db0194fbf3%3A0xbb4024565ed2bad9!2sRamrao+Adik+Institute+of+Technology!5e0!3m2!1sen!2sin!4v1425061659535" width="300" height="235" frameborder="0" style="border:0"></iframe>
+    
+       
+    <!-- ####################################################################################################### --> 
+  </div>
+</div>
+<!-- ####################################################################################################### -->
+<div class="wrapper">
+  <div id="copyright" class="clear">
+    <p class="fl_left">Copyright &copy; 2015 - All Rights Reserved - </p>
+  </div>
+</div
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+
+<title>CodeMirror: C-like mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css">
+<script src="../../lib/codemirror.js"></script>
+<script src="../../addon/edit/matchbrackets.js"></script>
+<link rel="stylesheet" href="../../addon/hint/show-hint.css">
+<script src="../../addon/hint/show-hint.js"></script>
+<script src="clike.js"></script>
+<style>.CodeMirror {border: 2px inset #dee;}</style>
+<div id=nav>
+  
+</div>
+
+<article>
+<h2>C-like mode</h2>
+
+
+
+<h2>C++ example</h2>
+
+<div><textarea id="cpp-code">
+#include <iostream>
+#include "mystuff/util.h"
+
+namespace {
+enum Enum {
+  VAL1, VAL2, VAL3
+};
+
+char32_t unicode_string = U"\U0010FFFF";
+string raw_string = R"delim(anything
+you
+want)delim";
+
+int Helper(const MyType& param) {
+  return 0;
+}
+} // namespace
+
+class ForwardDec;
+
+template <class T, class V>
+class Class : public BaseClass {
+  const MyType<T, V> member_;
+
+ public:
+  const MyType<T, V>& Method() const {
+    return member_;
+  }
+
+  void Method2(MyType<T, V>* value);
+}
+
+template <class T, class V>
+void Class::Method2(MyType<T, V>* value) {
+  std::out << 1 >> method();
+  value->Method3(member_);
+  member_ = value;
+}
+</textarea></div>
+
+
+
+
+
+    <script>
+      
+      var cppEditor = CodeMirror.fromTextArea(document.getElementById("cpp-code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/x-c++src"
+      });
+     
+      
+      var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
+      CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
+    </script>
+</article>
